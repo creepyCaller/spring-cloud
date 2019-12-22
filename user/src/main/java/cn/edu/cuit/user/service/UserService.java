@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * (User)表服务
  *
@@ -14,13 +17,17 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class UserService {
+    private static Map<Integer, User> users;
 
-    public User selectOne(String username) {
-        return User.builder()
-                .id(1)
-                .username(username)
-                .email("fpc@creepyCaller.com")
-                .status(1)
-                .build();
+    static {
+        users = new HashMap<>();
+    }
+
+    public User insert(User user) {
+        return users.put(user.getId(), user);
+    }
+
+    public User selectOne(Integer id) {
+        return users.get(id);
     }
 }

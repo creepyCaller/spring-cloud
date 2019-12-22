@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -24,16 +21,14 @@ import java.util.Date;
 public class UserController {
     private final UserService service;
 
-    @GetMapping("/{username}")
-    public ResponseEntity<User> selectOne(@PathVariable String username) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("author", "fpc");
-        headers.add("author", "courage");
-        headers.add("date", new Date().toString());
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .body(service.selectOne(username));
+    @GetMapping("/{id}")
+    public ResponseEntity<User> selectOne(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(service.selectOne(id));
+    }
+
+    @PutMapping("/")
+    public ResponseEntity insert(@RequestBody User user) {
+        return ResponseEntity.ok().body(service.insert(user));
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * (Want)表服务
@@ -17,17 +18,14 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class WantService {
+    private Map<Integer, Want> wants;
+
+    public Want insert(Want want) {
+        return wants.put(want.getId(), want);
+    }
 
     public Want selectOne(Integer id) {
-        return Want.builder()
-                .id(id)
-                .name("测试订单")
-                .amount(1)
-                .date(new Date())
-                .price(9.9)
-                .remark("测试订单的备注")
-                .status(1)
-                .build();
+        return wants.get(id);
 
     }
 }

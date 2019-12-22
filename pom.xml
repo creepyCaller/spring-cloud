@@ -14,6 +14,8 @@
         <module>resttemplate</module>
         <module>user</module>
         <module>want</module>
+        <module>consumer</module>
+        <module>gateway</module>
     </modules>
 
     <properties>
