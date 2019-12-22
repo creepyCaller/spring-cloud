@@ -11,6 +11,9 @@
     <modules>
         <module>eurekaserver</module>
         <module>eurekaclient</module>
+        <module>resttemplate</module>
+        <module>user</module>
+        <module>want</module>
     </modules>
 
     <properties>
