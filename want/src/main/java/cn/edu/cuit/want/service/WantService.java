@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * (Want)表服务
@@ -18,14 +21,30 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class WantService {
-    private Map<Integer, Want> wants;
+    private static List<Want> wants;
 
-    public Want insert(Want want) {
-        return wants.put(want.getId(), want);
+    static {
+        wants = new ArrayList<>();
+        wants.add(Want.builder().id(0).date(new Date()).name("a").price(9.9).status(1).amount(1).remark("none").build());
+        wants.add(Want.builder().id(1).date(new Date()).name("a").price(9.9).status(1).amount(1).remark("none").build());
+        wants.add(Want.builder().id(2).date(new Date()).name("a").price(9.9).status(1).amount(1).remark("none").build());
+    }
+
+    public boolean insert(Want want) {
+        return wants.add(want);
     }
 
     public Want selectOne(Integer id) {
-        return wants.get(id);
+        AtomicReference<Want> ret = new AtomicReference<>();
+        wants.parallelStream().forEach(each -> {
+            if (each.getId().equals(id)) {
+                ret.set(each);
+            }
+        });
+        return ret.get();
+    }
 
+    public List<Want> findAll() {
+        return wants;
     }
 }

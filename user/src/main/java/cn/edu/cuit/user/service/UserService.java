@@ -5,8 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * (User)表服务
@@ -17,17 +18,30 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class UserService {
-    private static Map<Integer, User> users;
+    private static List<User> users;
 
     static {
-        users = new HashMap<>();
+        users = new ArrayList<>();
+        users.add(User.builder().id(0).username("a").email("b").password("p").status(1).build());
+        users.add(User.builder().id(1).username("a").email("b").password("p").status(1).build());
+        users.add(User.builder().id(2).username("a").email("b").password("p").status(1).build());
     }
 
-    public User insert(User user) {
-        return users.put(user.getId(), user);
+    public boolean insert(User user) {
+        return users.add(user);
     }
 
     public User selectOne(Integer id) {
-        return users.get(id);
+        AtomicReference<User> ret = new AtomicReference<>();
+        users.parallelStream().forEach(each -> {
+            if (each.getId().equals(id)) {
+                ret.set(each);
+            }
+        });
+        return ret.get();
+    }
+
+    public List<User> findAll() {
+        return users;
     }
 }
