@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import java.util.ArrayList;
+import java.util.Collection;
 
 @RestController
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class RestTemplateUserController {
+public class UserController {
     private final RestTemplate restTemplate;
 
     @GetMapping("/user/id/{id}")
@@ -18,14 +18,14 @@ public class RestTemplateUserController {
         return restTemplate.getForEntity("http://localhost:8090/user/id/{id}", /*Body的类型*/ User.class, id); //返回一个ResponseEntity<User>
     }
 
-    @PutMapping("/")
+    @PutMapping("/user")
     public void insert(@RequestBody User user) {
         restTemplate.put("http://localhost:8090/user/", user);
     }
 
-    @GetMapping("/user/users")
+    @GetMapping("/users")
     public ResponseEntity findAll() {
-        return restTemplate.getForEntity("http://localhost:8090/user/users", ArrayList.class);
+        return restTemplate.getForEntity("http://localhost:8090/user/users", Collection.class);
     }
 
 }

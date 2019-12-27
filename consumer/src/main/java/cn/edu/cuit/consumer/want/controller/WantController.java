@@ -6,27 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import java.util.ArrayList;
+import java.util.Collection;
 
 @RestController
-@RequestMapping("/want")
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class RestTemplateWantController {
+public class WantController {
     private final RestTemplate restTemplate;
 
-    @GetMapping("/{id}")
+    @GetMapping("/want/id/{id}")
     public ResponseEntity<Want> selectOne(@PathVariable String id) {
         return restTemplate.getForEntity("http://localhost:8090/want/id/{id}", /*Body的类型*/ Want.class, id); //返回一个ResponseEntity<User>
     }
 
-    @PutMapping("/")
+    @PutMapping("/want")
     public void insert(@RequestBody Want want) {
         restTemplate.put("http://localhost:8090/want/", want);
     }
 
-    @GetMapping("/want/wants")
+    @GetMapping("/wants")
     public ResponseEntity findAll() {
-        return restTemplate.getForEntity("http://localhost:8090/want/wants", ArrayList.class);
+        return restTemplate.getForEntity("http://localhost:8090/want/wants", Collection.class);
     }
 
 }
